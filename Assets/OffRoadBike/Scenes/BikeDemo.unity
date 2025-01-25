@@ -699,6 +699,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1681165555}
+  - {fileID: 748292446}
   m_Father: {fileID: 35325888}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &630690769
@@ -819,13 +820,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 748292443}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.22456838, y: 0, z: 0, w: 0.9744584}
-  m_LocalPosition: {x: -0.086988956, y: 2.4876692, z: -2.7513404}
+  m_LocalRotation: {x: 0.13052616, y: 0, z: 0, w: 0.9914449}
+  m_LocalPosition: {x: 0, y: 1.866, z: -1.714}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2056030686}
-  m_LocalEulerAnglesHint: {x: 25.955, y: 0, z: 0}
+  m_Father: {fileID: 599185817}
+  m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
 --- !u!114 &748292447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1253,7 +1254,7 @@ MonoBehaviour:
   m_GearUpKey: 273
   m_GearDownKey: 274
   m_BikeInputSO: {fileID: 0}
-  m_Accelerate: 1
+  m_Accelerate: 0
   m_Reverse: 0
   m_Steer: 0
   m_HandBrake: 0
@@ -1581,12 +1582,11 @@ Transform:
   m_GameObject: {fileID: 2056030683}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 288542229}
-  - {fileID: 748292446}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &2056030687
