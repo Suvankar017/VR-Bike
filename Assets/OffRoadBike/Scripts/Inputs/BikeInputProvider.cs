@@ -19,12 +19,17 @@ namespace ReVR.Vehicles.Bike
 
         [FlexiableHeader("Keyboard", 18)]
         [SerializeField] private KeyCode m_AccelerateKey = KeyCode.W;
+        [SerializeField, Range(0.0f, 1.0f)] private float m_AccelerateMultiplier = 1.0f;
         [SerializeField] private KeyCode m_ReverseKey = KeyCode.S;
+        [SerializeField, Range(0.0f, 1.0f)] private float m_ReverseMultiplier = 1.0f;
         [SerializeField] private string m_SteerAxisName = "Horizontal";
+        [SerializeField, Range(0.0f, 1.0f)] private float m_SteerMultiplier = 1.0f;
         [SerializeField] private KeyCode m_HandBrakeKey = KeyCode.Space;
         [SerializeField] private KeyCode m_ClutchKey = KeyCode.LeftShift;
         [SerializeField] private KeyCode m_GearUpKey = KeyCode.UpArrow;
         [SerializeField] private KeyCode m_GearDownKey = KeyCode.DownArrow;
+        [SerializeField, Range(0.0f, 1.0f)] private float m_GearHalfMultiplier = 0.5f;
+        [SerializeField, Range(0.0f, 1.0f)] private float m_GearFullMultiplier = 1.0f;
 
         [FlexiableHeader("Input Asset", 18)]
         [SerializeField, RequiredField] private BikeInputSO m_BikeInputSO;
@@ -35,8 +40,7 @@ namespace ReVR.Vehicles.Bike
         [SerializeField, Range(-1.0f, 1.0f)] private float m_Steer;
         [SerializeField] private bool m_HandBrake = false;
         [SerializeField] private bool m_Clutch = false;
-        [SerializeField, Range(0.0f, 1.0f)] private float m_GearUp;
-        [SerializeField, Range(0.0f, 1.0f)] private float m_GearDown;
+        [SerializeField, Range(-1.0f, 1.0f)] private float m_Gear;
 
 
         private BikeInput m_InputData;
@@ -67,36 +71,35 @@ namespace ReVR.Vehicles.Bike
 
         private void HandleKeyboardInput()
         {
-            float accelerate = Input.GetKey(m_AccelerateKey) ? 1.0f : 0.0f;
-            float reverse = Input.GetKey(m_ReverseKey) ? 1.0f : 0.0f;
-            float steer = Input.GetAxisRaw(m_SteerAxisName);
+            float accelerate = Input.GetKey(m_AccelerateKey) ? m_AccelerateMultiplier : 0.0f;
+            float reverse = Input.GetKey(m_ReverseKey) ? m_ReverseMultiplier : 0.0f;
+            float steer = Input.GetAxisRaw(m_SteerAxisName) * m_SteerMultiplier;
             bool handBrake = Input.GetKey(m_HandBrakeKey);
             bool clutch = Input.GetKey(m_ClutchKey);
 
-            float gearUp = 0.0f;
-            float gearDown = 0.0f;
+            float gear = 0.0f;
             const float gearFullTimeDifference = 0.25f;
 
             if (Input.GetKey(m_GearUpKey))
             {
-                gearUp = 0.5f;
+                gear = m_GearHalfMultiplier;
 
                 if (Input.GetKeyDown(m_GearUpKey))
                     m_NextGearFullUpTime = Time.unscaledTime + gearFullTimeDifference;
 
                 if (Time.unscaledTime > m_NextGearFullUpTime)
-                    gearUp = 1.0f;
+                    gear = m_GearFullMultiplier;
             }
 
             if (Input.GetKey(m_GearDownKey))
             {
-                gearDown = 0.5f;
+                gear = -m_GearHalfMultiplier;
 
                 if (Input.GetKeyDown(m_GearDownKey))
                     m_NextGearFullDownTime = Time.unscaledTime + gearFullTimeDifference;
 
                 if (Time.unscaledTime > m_NextGearFullDownTime)
-                    gearDown = 1.0f;
+                    gear = -m_GearFullMultiplier;
             }
 
             m_InputData.accelerate = accelerate;
@@ -104,14 +107,6 @@ namespace ReVR.Vehicles.Bike
             m_InputData.steer = steer;
             m_InputData.handBrake = handBrake;
             m_InputData.clutch = clutch;
-
-            float gear = 0.0f;
-
-            if (gearUp > 0.0f)
-                gear = gearUp;
-            else if (gearDown > 0.0f)
-                gear = -gearDown;
-
             m_InputData.gear = gear;
 
             m_Controller.SetInput(m_InputData);
@@ -132,15 +127,7 @@ namespace ReVR.Vehicles.Bike
             m_InputData.steer = m_Steer;
             m_InputData.handBrake = m_HandBrake;
             m_InputData.clutch = m_Clutch;
-
-            float gear = 0.0f;
-
-            if (m_GearUp > 0.0f)
-                gear = m_GearUp;
-            else if (m_GearDown > 0.0f)
-                gear = -m_GearDown;
-
-            m_InputData.gear = gear;
+            m_InputData.gear = m_Gear;
 
             m_Controller.SetInput(m_InputData);
         }

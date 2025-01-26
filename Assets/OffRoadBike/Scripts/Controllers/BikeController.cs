@@ -12,6 +12,43 @@ namespace ReVR.Vehicles.Bike
         [SerializeField] private BikeFeature[] m_UpdateSequence;
         [SerializeField] private BikeFeature[] m_PhysicsUpdateSequence;
 
+        public float Speed
+        {
+            get
+            {
+                if (m_Rigidbody == null)
+                    return 0.0f;
+
+#if UNITY_6000_0_OR_NEWER
+            Vector3 linearVelocity = m_Rigidbody.linearVelocity;
+#else
+                Vector3 linearVelocity = m_Rigidbody.velocity;
+#endif
+
+                return linearVelocity.magnitude;
+            }
+        }
+        public float TopSpeed
+        {
+            get
+            {
+                if (m_Blackboard == null || m_Blackboard.maxSpeed == null)
+                    return 0.0f;
+
+                return m_Blackboard.maxSpeed.value;
+            }
+        }
+        public float CurrentMaxSpeed
+        {
+            get
+            {
+                if (m_Blackboard == null)
+                    return 0.0f;
+
+                return m_Blackboard.currentMaxSpeed;
+            }
+        }
+
         private Rigidbody m_Rigidbody;
         private BikeBlackboard m_Blackboard;
 
